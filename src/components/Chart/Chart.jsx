@@ -5,21 +5,17 @@ import { fetchDailyData } from '../../api';
 
 import styles from './Chart.module.css';
 
-const Chart = ({ 
-  data: {
-     confirmed, deaths, recovered,      
-    }, 
-    country 
-  }) => {
- 
-  const [dailyData, setDailyData] = useState([]);
+const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
+  const [dailyData, setDailyData] = useState({});
 
   useEffect(() => {
-    const fetchAPI = async () => {
-            setDailyData(await fetchDailyData());
-         };
+    const fetchMyAPI = async () => {
+      const initialDailyData = await fetchDailyData();
 
-    fetchAPI();
+      setDailyData(initialDailyData);
+    };
+
+    fetchMyAPI();
   }, []);
 
   const barChart = (
@@ -30,9 +26,7 @@ const Chart = ({
           datasets: [
             {
               label: 'People',
-              backgroundColor: ['rgba(0, 0, 255, 0.5)',
-                'rgba(0, 255, 0, 0.5)',
-                'rgba(255, 0, 0, 0.5)'],
+              backgroundColor: ['rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0, 0.5)', 'rgba(255, 0, 0, 0.5)'],
               data: [confirmed.value, recovered.value, deaths.value],
             },
           ],
@@ -46,17 +40,17 @@ const Chart = ({
   );
 
   const lineChart = (
-    dailyData.length ? (
+    dailyData[0] ? (
       <Line
         data={{
           labels: dailyData.map(({ date }) => date),
           datasets: [{
-            data: dailyData.map((confirmed) => confirmed),
+            data: dailyData.map((data) => data.confirmed),
             label: 'Infected',
             borderColor: '#3333ff',
             fill: true,
           }, {
-            data: dailyData.map((deaths) => deaths),
+            data: dailyData.map((data) => data.deaths),
             label: 'Deaths',
             borderColor: 'red',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
