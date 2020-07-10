@@ -29,11 +29,15 @@ class App extends React.Component {
 
     return (
       <div className={styles.container}>
-        <img className={styles.image} src={image} alt="COVID-19" />
+        <div className={styles.header}>
+        <h1>COVID-19 Global Tracking System</h1>
+        </div>
+        
+        {/* <img className={styles.image} src={image} alt="COVID-19" /> */}
         <CountryPicker handleCountryChange={this.handleCountryChange} />
         <Chart data={data} country={country} /> 
         <Cards data={data} />
-       
+       <div className={styles.footer}>All Rights Reserved to Ashfaq Ahmed-PIAIC/PANACLOUD </div>
         
       </div>
     );
